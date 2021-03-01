@@ -1,0 +1,65 @@
+<div class="container my-1">
+    <h2 class="text-center my-3">Undirskriftir</h2>
+</div>
+<% if(signatures.length === 0) { %>
+    <div class="container">
+      <p class="row col villur">Engar undirskriftir</p>
+    </div>
+  <% } else { %>
+    <div class="container d-flex justify-content-center flex-column">
+      <div class="cointainer d-flex justify-content-center">
+        <h3 class="">Fjöldi færslna: <%= numberOfItems %></h3>
+      </div>
+      <table class="table d-flex justify-content-center">
+        <tr class="row tb-row tb-header">
+          <td class="col col-2"><strong>Dags</strong></td>
+          <td class="col col-4"><strong>Nafn</strong></td>
+          <% if (user) { %>
+            <td class="col col-5"><strong>Athugasemd</strong></td>
+            <td class="col col-1"><strong>Eyða</strong></td>
+          <% } else { %>
+            <td class="col col-6"><strong>Athugasemd</strong></td>
+          <% } %> 
+        </tr>
+        <% signatures.forEach((signature) => { %>      
+            <tr class="row tb-row">
+              <td class="col col-2"><%= signature.signed.toLocaleDateString() %></td>
+              <% if (!signature.anonymous) { %>
+                <td class="col col-4"><%= signature.name %></td>
+              <% } else { %>
+                <td class="col col-4">Nafnlaus</td>
+              <% } %>
+              <% if (user) { %>
+                <td class="col col-5"><%= signature.comment %></td>
+                <td class="col col-1">
+                  <form method="post" action="/delete">
+                    <input type="hidden" name="id" value="<%= signature.id %>">
+                    <button class="eyda">Eyða</button>
+                  </form>
+                </td>
+              <% } else { %>
+                <td class="col col-6"><%= signature.comment %></td>
+              <% } %> 
+            </tr>
+        <% }); %>
+        </table>
+    </div>
+  <% } %>
+  <div class="container d-flex justify-content-center my-5">
+    <div class="pagination container d-flex justify-content-center">
+      <div class="prev w-25 text-end">
+        <% if (hasPreviousPage) { %>
+          <a class="" href="?page=<%= previousPage %>">Fyrri síða</a>
+        <% } %>
+      </div>
+      <div class="current w-25 text-center">
+        Síða <%= currentPage %> af <%= lastPage %>
+      </div>
+      <div class="next w-25 text-start">
+        <% if (hasNextPage) { %>
+        <a class="" href="?page=<%= nextPage %>">Næsta síða</a>
+        <% } %>
+      </div>
+    </div>
+  </div>
+
